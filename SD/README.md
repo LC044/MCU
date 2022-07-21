@@ -23,13 +23,18 @@ from machine import Pin, SPI
 import machine, os
 import sdcard
 
-SD_CS = machine.Pin(5)
-sd = sdcard.SDCard(machine.SPI(2,sck=Pin(18), mosi=Pin(23),miso=Pin(19)), SD_CS)
+SD_CS = machine.Pin(15)
+spi = machine.SPI(1,sck=Pin(14), mosi=Pin(13),miso=Pin(12))
+spi.init()
+sd = sdcard.SDCard(spi, SD_CS)
 vfs = os.VfsFat(sd)   # 初始化fat文件系统
 os.mount(sd, "/sd")   # 挂载SD卡到/sd目录下
 dirs=os.listdir('/sd')
 for file in dirs:
    print (file)
+f = open('/sd/hello.txt','w',encoding='utf-8')
+f.write('hello')
+f.close()
 
 ```
 
