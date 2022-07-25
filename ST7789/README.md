@@ -1,12 +1,14 @@
 # ESP32使用microPython控制1.54寸240x240彩色屏幕
 
+王铭东老师[B站视频](https://www.bilibili.com/video/BV1G34y1E7tE?p=10&vd_source=13a6ca1b8ea2bd3d76cf79603acf8ccc)详细讲解了讲了关于240x240屏幕的一些基础东西，我这里在原功能的基础上拓展了中文显示的功能，顺带修改了实际操作过程中程序中遇到的一些问题
+
 ## 一、运行效果
 
 ![](https://github.com/LC044/MCU/blob/main/ST7789/image/gif_2022_0725_211323.gif)
 
 ## 二、240x240屏幕
 
-![img](https://img2020.cnblogs.com/blog/650273/202112/650273-20211217190757546-652608122.png)
+![](https://img2020.cnblogs.com/blog/650273/202112/650273-20211217190757546-652608122.png)
 
 ST7789有 **ST7789**, **ST7789V**, **ST7789H2**等型号, 分辨率有240x204, 240x240, 240x320等多种类型, 驱动方式都是一样的.
 
@@ -73,7 +75,7 @@ st7789py.py：https://github.com/russhughes/st7789py_mpy
 
 ### 4.3、支持中文显示（还不完善）
 
-增加三个方法
+st7789类中增加三个方法
 
 1. 显示16x16大小的中文
 
