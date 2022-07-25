@@ -2,7 +2,7 @@
 
 ## 一、运行效果
 
-![](H:\程序猿\MyNote\物联网\硬件积木\ST7789\image\gif_2022_0725_211323.gif)
+![](https://github.com/LC044/MCU/blob/main/ST7789/image/gif_2022_0725_211323.gif)
 
 ## 二、240x240屏幕
 
