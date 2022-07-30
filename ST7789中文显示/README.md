@@ -2,6 +2,8 @@
 
 ## 一、运行效果
 
+![](https://github.com/LC044/MCU/blob/main/ST7789%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA/picture/lv_0_20220730145237%2000_00_00-00_00_30.gif)
+
 ## 二、实现原理
 
 原理同上篇文章一样，用在线汉字取模工具获取点阵的字节信息，通过st7789py.py驱动程序显示出来。
@@ -289,3 +291,90 @@ if __name__ == '__main__':
     print(f48.WIDTH)
 ```
 
+## 四、测试代码
+
+```python
+from machine import Pin, SPI
+from package import st7789py as st
+import time
+
+
+class Display():
+    def __init__(self):
+        self.tft = st.ST7789(SPI(2, 10000000), 240, 240, reset=Pin(17), dc=Pin(2), cs=Pin(5), backlight=Pin(22), rotation=0)
+        self.WHITE = st.color565(255, 255, 255)#BRG
+        self.BLACK = st.color565(0, 0, 0)
+        self.RED = st.color565(0, 0, 255)
+        self.last_hour = 0
+        self.last_minute = 0
+        self.last_second = 0
+        self.last_year = 0
+        self.last_month = 0
+        self.last_day = 0
+        self.clock_x = 20+24*2-12
+        self.clock_y = 90
+        self.init_show()
+        
+    def init_show(self):
+        '''
+        初始化显示画面
+        '''
+        self.tft.fill(0)
+        print('ok')
+        time.sleep(2)
+        """
+        风急天高猿啸哀，渚清沙白鸟飞回。
+        无边落木萧萧下，不尽长江滚滚来。
+        万里悲秋常作客，百年多病独登台。
+        艰难苦恨繁霜鬓，潦倒新停浊酒杯。
+        """
+        self.tft.text(24, '登高', 100, 0, self.WHITE, self.BLACK)
+        self.tft.text(24, '—杜甫', 140, 30, self.WHITE, self.BLACK)
+        self.tft.text(16, '风急天高猿啸哀，渚清沙白鸟飞回。', 0, 70, self.WHITE, self.BLACK)
+        self.tft.text(16, '无边落木萧萧下，不尽长江滚滚来。', 0, 90, self.WHITE, self.BLACK)
+        self.tft.text(16, '万里悲秋常作客，百年多病独登台。', 0, 110, self.WHITE, self.BLACK)
+        self.tft.text(16, '艰难苦恨繁霜鬓，潦倒新停浊酒杯。', 0, 130, self.WHITE, self.BLACK)
+        self.tft.text(24, '众鸟高飞尽孤云独去闲。', 0, 210, self.WHITE, self.BLACK)
+        self.tft.text(24, '相看两不厌只有敬亭山。', 0, 170, self.WHITE, self.BLACK)
+        
+
+    def show_time(self,t):
+        t = time.localtime(time.time())
+        '''
+        显示时间
+        '''
+        year = t[0]
+        month = t[1]
+        day = t[2]
+        hour = t[3]
+        minute = t[4]
+        second = t[5]
+        ti = "{:0>2d}:{:0>2d}:{:0>2d}".format(hour,minute,second)
+        #print(ti)
+        if hour != self.last_hour:
+            self.tft.text(48, '{:0>2d}'.format(hour), self.clock_x, self.clock_y, self.WHITE, self.BLACK)
+            self.last_hour = hour
+        if minute != self.last_minute:
+            self.tft.text(48, '{:0>2d}'.format(minute), self.clock_x + 24*3, self.clock_y, self.WHITE, self.BLACK)
+            self.last_minute = minute
+        
+        
+    def run(self):
+        pass
+            
+        
+    def __del__(self):
+        pass
+D = Display()
+D.run()
+```
+
+运行结果见开头
+
+# 五、附件下载
+
+点击下载[GitHub地址](https://github.com/LC044/MCU/tree/main/ST7789%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA)
+
+天气时钟
+
+![](https://github.com/LC044/MCU/blob/main/ST7789%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA/picture/lv_0_20220730145250%2000_00_00-00_00_30.gif)
