@@ -290,8 +290,86 @@ if __name__ == '__main__':
     print(f32.SIZE)
     print(f48.WIDTH)
 ```
+## 四、st7789py.py驱动修改
 
-## 四、测试代码
+1. 模块导入
+
+   ```python
+   '''
+   导入字体
+   '''
+   from package import GBfont
+   from package import vga1_16x32 as font
+   from package import font_gb_16x16 as font_gb
+   GB16 = GBfont.gb2312(16)
+   GB24 = GBfont.gb2312(24)
+   GB32 = font_gb.Font32(32)
+   GB48 = font_gb.Font48(48
+   ```
+
+2. text_gb显示中文
+
+   ```python
+   def text_gb(self,font,size, text, x0, y0, color=WHITE, background=BLACK):
+       """
+       显示中文
+       font (class): 字体
+       size (int): 字体大小
+       text (str): 要显示的中文文本（不能含有半角英文符号）
+       x0 (int): column to start drawing at
+       y0 (int): row to start drawing at
+       color (int): 565 encoded color to use for background
+       background (int): 565 encoded color to use for background
+       """
+       for char in text:
+           if (x0+font.WIDTH <= self.width and y0+font.HEIGHT <= self.height):
+               for line in range(2):  # 分两次显示，先显示上半边后显示下半边
+                       idx = line * (font.SIZE//2)
+                       buffer = b''
+                       for x in range((font.SIZE//2)):
+                           for i in range(8):
+                               buffer += struct.pack('H',color if font.FONT[char][idx+x] & _BIT[7-i] else background)
+                       self.blit_buffer(buffer, x0, y0+(font.HEIGHT//2)*line, font.WIDTH, font.HEIGHT//2)
+               x0 += font.WIDTH  # 显示下一个字的时候x坐标增加字体宽度
+   ```
+
+   
+
+3. 修改text方法
+
+   ```python
+   def text(self,size, text, x0, y0, color=WHITE, background=BLACK):
+       """
+       Draw text on display in specified font and colors. 8 and 16 bit wide
+       fonts are supported.
+       Args:
+           font (module): font module to use.
+           text (str): text to write
+           x0 (int): column to start drawing at
+           y0 (int): row to start drawing at
+           color (int): 565 encoded color to use for characters
+           background (int): 565 encoded color to use for background
+       """
+       char = text[0].encode('utf-8')
+       if len(char) == 1 and size <= 32:
+           if font.WIDTH == 8:
+               self._text8(font, text, x0, y0, color, background)
+           else:
+               self._text16(font, text, x0, y0, color, background)
+       else:
+           if size == 16:
+               font_gb = GB16.str(text)
+           elif size == 24:
+               font_gb = GB24.str(text)
+           elif size == 32:
+               font_gb = GB32
+           elif size == 48:
+               font_gb = GB48
+           self.text_gb(font_gb,size, text, x0, y0, color, background)
+   ```
+
+   
+## 五、测试代码
 
 ```python
 from machine import Pin, SPI
@@ -371,7 +449,7 @@ D.run()
 
 运行结果见开头
 
-# 五、附件下载
+# 六、附件下载
 
 点击下载[GitHub地址](https://github.com/LC044/MCU/tree/main/ST7789%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA)
 
