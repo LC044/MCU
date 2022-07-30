@@ -2,7 +2,7 @@
 
 ## 一、运行效果
 
-![](https://github.com/LC044/MCU/blob/main/ST7789%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA/picture/lv_0_20220730145237%2000_00_00-00_00_30.gif)
+![](https://github.com/LC044/MCU/blob/main/ST7789%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA/picture/lv_0_20220730145237%2000_00_00-00_00_30~1.gif)
 
 ## 二、实现原理
 
@@ -377,4 +377,4 @@ D.run()
 
 天气时钟
 
-![](https://github.com/LC044/MCU/blob/main/ST7789%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA/picture/lv_0_20220730145250%2000_00_00-00_00_30.gif)
+![](https://github.com/LC044/MCU/blob/main/ST7789%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA/picture/lv_0_20220730145250%2000_00_00-00_00_30~1.gif)
